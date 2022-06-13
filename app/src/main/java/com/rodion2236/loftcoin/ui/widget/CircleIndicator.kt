@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.widget
 
 import android.content.Context
 import android.graphics.Canvas

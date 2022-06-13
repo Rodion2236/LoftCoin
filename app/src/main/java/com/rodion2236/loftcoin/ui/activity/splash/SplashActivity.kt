@@ -1,9 +1,12 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.activity.splash
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.preference.PreferenceManager
+import com.rodion2236.loftcoin.ui.activity.main.MainActivity
+import com.rodion2236.loftcoin.R
+import com.rodion2236.loftcoin.ui.activity.welcome.WelcomeActivity
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

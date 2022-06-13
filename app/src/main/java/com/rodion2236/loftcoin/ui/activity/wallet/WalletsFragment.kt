@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.activity.wallet
 
 import android.os.Bundle
 import android.util.TypedValue
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.databinding.FragmentWalletsBinding
 import kotlin.math.abs
 import kotlin.math.pow
@@ -20,8 +21,7 @@ class WalletsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_wallets, container, false
-        )
+        return inflater.inflate(R.layout.fragment_wallets, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

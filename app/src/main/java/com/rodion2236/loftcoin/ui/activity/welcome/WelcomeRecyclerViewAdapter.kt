@@ -1,8 +1,9 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.activity.welcome
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.databinding.WelcomePageBinding
 
 internal class WelcomeRecyclerViewAdapter: RecyclerView.Adapter<WelcomeRecyclerViewAdapter.ViewHolder>() {

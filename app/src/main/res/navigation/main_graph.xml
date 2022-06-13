@@ -7,20 +7,26 @@
 
     <fragment
         android:id="@+id/wallets"
-        android:name="com.rodion2236.loftcoin.WalletsFragment"
+        android:name="com.rodion2236.loftcoin.ui.activity.wallet.WalletsFragment"
         android:label="@string/wallets"
         tools:layout="@layout/fragment_wallets" />
 
     <fragment
         android:id="@+id/rates"
-        android:name="com.rodion2236.loftcoin.RatesFragment"
+        android:name="com.rodion2236.loftcoin.ui.activity.rates.RatesFragment"
         android:label="@string/rates"
         tools:layout="@layout/fragment_rates" />
 
     <fragment
         android:id="@+id/converter"
-        android:name="com.rodion2236.loftcoin.ConverterFragment"
+        android:name="com.rodion2236.loftcoin.ui.activity.converter.ConverterFragment"
         android:label="@string/converter"
         tools:layout="@layout/fragment_converter" />
+
+    <dialog
+        android:id="@+id/currency_dialog"
+        android:name="com.rodion2236.loftcoin.ui.activity.currency.CurrencyDialog"
+        android:label="@string/choose_currency"
+        tools:layout="@layout/dialog_currency"/>
 
 </navigation>

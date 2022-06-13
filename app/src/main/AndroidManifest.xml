@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.rodion2236.loftcoin">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.rodion2236.loftcoin.ui.activity.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,8 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WelcomeActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name="com.rodion2236.loftcoin.ui.activity.welcome.WelcomeActivity"/>
+        <activity android:name="com.rodion2236.loftcoin.ui.activity.main.MainActivity"/>
     </application>
 
 </manifest>
