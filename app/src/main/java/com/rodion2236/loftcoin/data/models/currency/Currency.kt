@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin.data
+package com.rodion2236.loftcoin.data.models.currency
 
 abstract class Currency {
     abstract fun symbol(): String?

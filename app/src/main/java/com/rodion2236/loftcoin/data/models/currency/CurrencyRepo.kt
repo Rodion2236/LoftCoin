@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin.data
+package com.rodion2236.loftcoin.data.models.currency
 
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable

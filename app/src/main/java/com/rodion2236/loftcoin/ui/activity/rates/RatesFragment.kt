@@ -7,24 +7,34 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rodion2236.loftcoin.R
+import com.rodion2236.loftcoin.core.BaseComponent
 import com.rodion2236.loftcoin.databinding.FragmentRatesBinding
 import com.rodion2236.loftcoin.ui.util.PercentFormatter
 import com.rodion2236.loftcoin.ui.util.PriceFormatter
+import javax.inject.Inject
 
-class RatesFragment : Fragment() {
+class RatesFragment @Inject constructor(
+    baseComponent: BaseComponent
+) : Fragment() {
 
     private lateinit var adapter: RatesAdapter
     private lateinit var viewModel: RatesViewModel
     private lateinit var bindingRatesFragment: FragmentRatesBinding
 
+    private val component = DaggerRatesComponent
+        .builder()
+        .baseComponent(baseComponent)
+        .build()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RatesViewModel::class.java)
+        viewModel = ViewModelProvider(this, component.viewModelFactory())[RatesViewModel::class.java]
         adapter = RatesAdapter(PriceFormatter(), PercentFormatter())
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.fragment_rates, container, false)
     }
 

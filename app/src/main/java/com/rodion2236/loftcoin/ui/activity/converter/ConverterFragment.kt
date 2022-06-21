@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.databinding.FragmentConverterBinding
+import javax.inject.Inject
 
-class ConverterFragment : Fragment() {
+class ConverterFragment @Inject constructor(): Fragment() {
 
     private lateinit var bindingConverterFragment: FragmentConverterBinding
 

@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.databinding.FragmentWalletsBinding
+import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.pow
 
-class WalletsFragment : Fragment() {
+class WalletsFragment @Inject constructor() : Fragment() {
 
     private var walletsSnapHelper: SnapHelper? = null
 

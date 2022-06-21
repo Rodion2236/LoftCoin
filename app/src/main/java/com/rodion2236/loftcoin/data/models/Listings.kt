@@ -1,5 +1,6 @@
 package com.rodion2236.loftcoin.data.models
 
+import com.rodion2236.loftcoin.data.models.coin.Coin
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

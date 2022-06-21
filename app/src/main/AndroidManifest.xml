@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".LoftApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -27,5 +28,4 @@
         <activity android:name="com.rodion2236.loftcoin.ui.activity.welcome.WelcomeActivity"/>
         <activity android:name="com.rodion2236.loftcoin.ui.activity.main.MainActivity"/>
     </application>
-
 </manifest>
