@@ -14,6 +14,11 @@
     <string name="wallets">Кошельки</string>
     <string name="rates">Курс</string>
     <string name="converter">Конвертер</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="usd">Доллар</string>
+    <string name="eur">Евро</string>
+    <string name="rub">Рубль</string>
+
+    <string name="choose_currency">Выбор валюты</string>
+    <string name="sort">Сортировать</string>
 </resources>

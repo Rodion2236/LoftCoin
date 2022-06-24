@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.activity.rates
 
 data class Rates(
     val id: Int,

@@ -1,10 +1,11 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.activity.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

@@ -9,6 +9,8 @@
         <item name="android:gravity">center</item>
         <item name="android:paddingStart">64dp</item>
         <item name="android:paddingEnd">64dp</item>
+        <item name="textNegative">@color/watermelon</item>
+        <item name="textPositive">@color/weird_green</item>
     </style>
 
     <style name="TextAppearance.AppTheme" parent="TextAppearance.MaterialComponents.Body1" />

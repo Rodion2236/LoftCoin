@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.activity.wallet
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

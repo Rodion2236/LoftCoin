@@ -3,6 +3,7 @@ package com.rodion2236.loftcoin
 import android.app.Application
 import android.os.StrictMode
 import androidx.viewbinding.BuildConfig
+import timber.log.Timber
 
 class LoftApp: Application() {
 
@@ -26,6 +27,7 @@ class LoftApp: Application() {
                     .penaltyDeath()
                     .build()
             )
+            Timber.plant(DebugTree())
         }
     }
 }

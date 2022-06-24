@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.activity.welcome
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.rodion2236.loftcoin.ui.widget.CircleIndicator
+import com.rodion2236.loftcoin.ui.activity.main.MainActivity
 import com.rodion2236.loftcoin.databinding.ActivityWelcomeBinding
 
 class WelcomeActivity : AppCompatActivity() {
