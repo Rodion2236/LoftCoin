@@ -11,7 +11,7 @@ import com.rodion2236.loftcoin.data.models.currency.CurrencyRepo
 import com.rodion2236.loftcoin.repository.CoinsRepo
 import javax.inject.Inject
 
-class RatesViewModel @Inject constructor(currencyRepo: CurrencyRepo, coinsRepo: CoinsRepo, coinQuery: CoinQuery): ViewModel() {
+class RatesViewModel @Inject constructor(coinsRepo: CoinsRepo, currencyRepo: CurrencyRepo): ViewModel() {
 
     private val sortBy = MutableLiveData(SortBy.RANK)
 
@@ -24,11 +24,12 @@ class RatesViewModel @Inject constructor(currencyRepo: CurrencyRepo, coinsRepo: 
 
     fun refresh() {
         forceRefresh.postValue(true)
+
     }
 
     init {
         refresh()
-
+        currencyRepo.availableCurrencies()
         val query = Transformations.map(forceRefresh) {
             _isLoading.postValue(true)
             CoinQuery("USD", it)

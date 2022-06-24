@@ -6,7 +6,7 @@ import com.rodion2236.loftcoin.data.models.currency.Currency
 import com.rodion2236.loftcoin.data.models.currency.CurrencyRepo
 import javax.inject.Inject
 
-internal class CurrencyViewModel @Inject constructor(
+class CurrencyViewModel @Inject constructor(
     private val currencyRepo: CurrencyRepo
     ) : ViewModel() {
 

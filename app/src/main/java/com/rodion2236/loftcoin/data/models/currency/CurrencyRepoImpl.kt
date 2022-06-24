@@ -4,20 +4,28 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
 import com.rodion2236.loftcoin.R
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import java.util.HashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CurrencyRepoImpl @Inject constructor(
-    private val prefs: SharedPreferences,
-    private val context: Context,
-    private val availableCurrencies: MutableMap<String, Currency> = HashMap()
+     context: Context
 ) : CurrencyRepo {
+    private var prefs: SharedPreferences
+    private val availableCurrencies: MutableMap<String, Currency> = HashMap()
 
+    init {
+        prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+            availableCurrencies["USD"] = Currency.create("$", "USD", context.getString(R.string.usd))
+            availableCurrencies["EUR"] = Currency.create("E", "EUR", context.getString(R.string.eur))
+            availableCurrencies["RUB"] = Currency.create("R", "RUB", context.getString(R.string.rub))
+
+    }
 
     override fun availableCurrencies(): LiveData<List<Currency>> {
         val liveData = MutableLiveData<List<Currency>>()
@@ -47,9 +55,5 @@ class CurrencyRepoImpl @Inject constructor(
         private const val KEY_CURRENCY = "currency"
     }
 
-    init {
-        availableCurrencies["USD"] = Currency.create("$", "USD", context.getString(R.string.usd))
-        availableCurrencies["EUR"] = Currency.create("E", "EUR", context.getString(R.string.eur))
-        availableCurrencies["RUB"] = Currency.create("R", "RUB", context.getString(R.string.rub))
-    }
+
 }

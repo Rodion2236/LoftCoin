@@ -14,20 +14,23 @@ import com.rodion2236.loftcoin.ui.util.PriceFormatter
 import javax.inject.Inject
 
 class RatesFragment @Inject constructor(
-    baseComponent: BaseComponent
+
 ) : Fragment() {
 
     private lateinit var adapter: RatesAdapter
     private lateinit var viewModel: RatesViewModel
     private lateinit var bindingRatesFragment: FragmentRatesBinding
 
-    private val component = DaggerRatesComponent
-        .builder()
-        .baseComponent(baseComponent)
-        .build()
+    private lateinit var baseComponent: BaseComponent
+
+    private lateinit var component: RatesComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        component = DaggerRatesComponent
+            .builder()
+            .baseComponent(baseComponent)
+            .build()
         viewModel = ViewModelProvider(this, component.viewModelFactory())[RatesViewModel::class.java]
         adapter = RatesAdapter(PriceFormatter(), PercentFormatter())
     }
