@@ -1,18 +1,33 @@
 package com.rodion2236.loftcoin.data.models.coin
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class CmcCoin(
-    override val id: Long,
-    override val name: String,
-    override val symbol: String,
+    val id: Int,
+    val name: String,
+    val symbol: String,
     @Json(name = "cmc_rank")
-    override val rank: Int,
+    val rank: String,
     val quote: Map<String, Quote>
-) : Coin {
-    override val price: Double
-        get() = quote.values.firstOrNull()?.price ?: 0.0
+)
 
-    override val change24h: Double
-        get() = quote.values.firstOrNull()?.change24h ?: 0.0
-}
+@JsonClass(generateAdapter = true)
+data class Quote(
+    val price: Double,
+    @Json(name = "percent_change_24h")
+    val change24h: Double
+)
+
+
+
+data class Coin(
+    val id: Int,
+    val name: String,
+    val symbol: String,
+    val rank: String,
+    val price: Double,
+    val change24h: Double,
+    val currencyCode: String
+)

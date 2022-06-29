@@ -2,10 +2,8 @@ package com.rodion2236.loftcoin.ui.activity.currency
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.core.BaseComponent

@@ -33,8 +33,8 @@ internal class CurrencyAdapter : ListAdapter<Currency, CurrencyAdapter.ViewHolde
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currency = getItem(position)
-        holder.binding.itemCurrencyName.text = currency.name()
-        holder.binding.itemCurrencySymbol.text = currency.symbol()
+        holder.binding.itemCurrencyName.text = currency.name
+        holder.binding.itemCurrencySymbol.text = currency.symbol
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {

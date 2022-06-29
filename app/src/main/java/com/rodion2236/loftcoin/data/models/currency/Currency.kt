@@ -1,13 +1,10 @@
 package com.rodion2236.loftcoin.data.models.currency
 
-abstract class Currency {
-    abstract fun symbol(): String?
-    abstract fun code(): String?
-    abstract fun name(): String?
+import com.squareup.moshi.JsonClass
 
-    companion object {
-        fun create(symbol: String?, code: String?, name: String?): Currency {
-            return create(symbol, code, name)
-        }
-    }
-}
+@JsonClass(generateAdapter = true)
+data class Currency(
+    val symbol: String,
+    val code: String,
+    val name: String
+)

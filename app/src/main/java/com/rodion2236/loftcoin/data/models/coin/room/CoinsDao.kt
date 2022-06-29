@@ -10,13 +10,19 @@ import androidx.room.Query
 @Dao
 interface CoinsDao {
 
-    @Query("SELECT * from RoomCoin")
-    fun fetchAll(): LiveData<List<RoomCoin>>
+    @Query("SELECT * FROM RoomCoin")
+    abstract fun fetchAll(): LiveData<List<RoomCoin>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(coins: List<RoomCoin>)
+    @Query("SELECT * FROM RoomCoin ORDER BY price DESC")
+    abstract fun fetchAllSortByPrice(): LiveData<List<RoomCoin>>
+
+    @Query("SELECT * FROM RoomCoin ORDER BY rank ASC")
+    abstract fun fetchAllSortByRank(): LiveData<List<RoomCoin>>
 
     @WorkerThread
     @Query("SELECT COUNT(id) FROM RoomCoin")
-    fun coinsCount() : Int
+    abstract fun coinsCount(): Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insert(coins: List<RoomCoin>)
 }

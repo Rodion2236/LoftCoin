@@ -19,4 +19,6 @@ import javax.inject.Singleton
 abstract class RatesComponent {
 
     abstract fun viewModelFactory() : ViewModelProvider.Factory
+
+    abstract fun ratesAdapter(): RatesAdapter
 }

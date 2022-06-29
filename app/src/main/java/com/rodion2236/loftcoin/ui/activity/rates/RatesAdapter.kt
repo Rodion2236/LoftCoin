@@ -14,8 +14,9 @@ import com.rodion2236.loftcoin.ui.util.PercentFormatter
 import com.rodion2236.loftcoin.ui.util.PriceFormatter
 import com.rodion2236.loftcoin.ui.widget.CircleViewOutLineProvider
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
-class RatesAdapter(
+class RatesAdapter @Inject constructor(
     private var priceFormatter: PriceFormatter,
     private var percentFormatter: PercentFormatter
 ) : ListAdapter<Coin, RatesAdapter.RatesViewHolder>(CoinComparator) {

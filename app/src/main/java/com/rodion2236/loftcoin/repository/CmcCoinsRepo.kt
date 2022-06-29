@@ -1,13 +1,15 @@
 package com.rodion2236.loftcoin.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.rodion2236.loftcoin.data.SortBy
 import com.rodion2236.loftcoin.data.api.CmcApi
+import com.rodion2236.loftcoin.data.models.Listings
+import com.rodion2236.loftcoin.data.models.coin.CmcCoin
 import com.rodion2236.loftcoin.data.models.coin.Coin
-import com.rodion2236.loftcoin.data.models.coin.CoinQuery
 import com.rodion2236.loftcoin.data.models.coin.room.LoftCoinDatabase
 import com.rodion2236.loftcoin.data.models.coin.room.RoomCoin
+import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
 import java.util.concurrent.ExecutorService
@@ -16,74 +18,81 @@ import javax.inject.Singleton
 
 @Singleton
 class CmcCoinsRepo @Inject constructor(
-    private val cmcApi: CmcApi,
+    private val api: CmcApi,
     private val db: LoftCoinDatabase,
     private val executor: ExecutorService
 ) : CoinsRepo {
 
-    override fun listings(currency: String): List<Coin> {
-        val result = cmcApi.listings(currency).execute()
-        if (result.isSuccessful) {
-            return result.body()?.data ?:
-            throw IllegalStateException("")
+    override fun listings(query: CoinsRepo.Query): LiveData<List<Coin>> {
+        fetchFromNetworkIfNecessary(query)
+        return try {
+            fetchFromDb(query)
+        } catch (e: Exception) {
+            fetchFromDb(query)
+        }
+    }
+
+    private fun fetchFromDb(query: CoinsRepo.Query): LiveData<List<Coin>> {
+        val coins: LiveData<List<RoomCoin>> = if (query.sortBy == SortBy.PRICE) {
+            db.coins().fetchAllSortByPrice()
         } else {
-            throw IOException(result.errorBody()?.string() ?: "")
+            db.coins().fetchAllSortByRank()
         }
-    }
-
-    override fun listings(query: CoinQuery): LiveData<List<Coin>> {
-        val refresh = MutableLiveData<Boolean>()
-        executor.submit {
-            refresh.postValue(query.forceUpdate || db.coins().coinsCount() == 0)
-        }
-
-        return Transformations.switchMap(refresh) {
-            if (refresh.value == true) {
-                fetchFromNetwork(query)
-            } else {
-                fetchFromDb(query)
+        return Transformations.map<List<RoomCoin>, List<Coin>>(coins) { roomCoins ->
+            roomCoins.map {
+                Coin(
+                    id = it.id,
+                    name = it.name,
+                    symbol = it.symbol,
+                    rank = it.rank,
+                    price = it.price,
+                    change24h = it.change24h,
+                    currencyCode = it.currencyCode
+                )
             }
         }
     }
 
-    private fun fetchFromDb(query: CoinQuery): LiveData<List<Coin>> {
-        return Transformations.map(db.coins().fetchAll()) { it }
-    }
-
-    private fun fetchFromNetwork(query: CoinQuery): LiveData<List<Coin>> {
-        val liveData = MutableLiveData<List<Coin>>()
+    private fun fetchFromNetworkIfNecessary(query: CoinsRepo.Query) {
         executor.submit {
-            try {
-                val result = cmcApi.listings(query.currency).execute()
-                if (result.isSuccessful) {
-                    val items = result.body()
-                    if (items?.data != null) {
-                        val coins = items.data
-                        saveCoinsIntoDb(coins)
-                        liveData.postValue(coins)
+            if (query.forceUpdate || db.coins().coinsCount() == 0) {
+                try {
+                    val response: Response<Listings> =
+                        api.listings(query.currency).execute()
+                    if (response.isSuccessful) {
+                        val listings = response.body()
+                        if (listings != null) {
+                            saveCoinsIntoDb(query, listings.data)
+                        }
                     } else {
-                        throw IllegalStateException("")
+                        val responseBody = response.errorBody()
+                        if (responseBody != null) {
+                            throw IOException(responseBody.string())
+                        }
                     }
-                } else {
-                    val error = result.errorBody()
-                    throw IOException(error?.string() ?: "")
+                } catch (e: IOException) {
+                    Timber.e(e)
                 }
-            } catch (e: Throwable) {
-                Timber.e(e)
             }
         }
-        return liveData
     }
 
-    private fun saveCoinsIntoDb(coin: List<Coin>) {
-        val roomCoin = coin.map { RoomCoin(
-            it.id,
-            it.name,
-            it.symbol,
-            it.rank,
-            it.price,
-            it.change24h
-        ) }
-        db.coins().insert(roomCoin)
+    private fun saveCoinsIntoDb(query: CoinsRepo.Query, coins: List<CmcCoin>) {
+        val roomCoins: MutableList<RoomCoin> = java.util.ArrayList<RoomCoin>(coins.size)
+        for (coin in coins) {
+            roomCoins.add(
+                RoomCoin(
+                    name = coin.name,
+                    symbol = coin.symbol,
+                    rank = coin.rank,
+                    price = coin.quote.values.iterator().next().price,
+                    change24h = coin.quote.values.iterator().next().change24h,
+                    currencyCode = query.currency,
+                    id = coin.id
+                )
+            )
+        }
+        db.coins().insert(roomCoins)
     }
+
 }
