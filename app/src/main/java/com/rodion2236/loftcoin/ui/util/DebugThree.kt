@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin
+package com.rodion2236.loftcoin.ui.util
 
 import timber.log.Timber
 import java.util.*

@@ -1,6 +1,5 @@
 package com.rodion2236.loftcoin.ui.activity.rates
 
-import android.graphics.Color
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,21 +8,22 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rodion2236.loftcoin.BuildConfig
 import com.rodion2236.loftcoin.R
-import com.rodion2236.loftcoin.data.models.Coin
+import com.rodion2236.loftcoin.data.models.coin.Coin
 import com.rodion2236.loftcoin.databinding.ItemRatesBinding
-import com.rodion2236.loftcoin.ui.util.CircleViewOutLineProvider
 import com.rodion2236.loftcoin.ui.util.PercentFormatter
 import com.rodion2236.loftcoin.ui.util.PriceFormatter
+import com.rodion2236.loftcoin.ui.widget.CircleViewOutLineProvider
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
-class RatesAdapter(
+class RatesAdapter @Inject constructor(
     private var priceFormatter: PriceFormatter,
     private var percentFormatter: PercentFormatter
 ) : ListAdapter<Coin, RatesAdapter.RatesViewHolder>(CoinComparator) {
 
     private lateinit var inflater: LayoutInflater
-    private var colorPositive = Color.GREEN
-    private var colorNegative = Color.RED
+    private var colorPositive = R.color.weird_green
+    private var colorNegative = R.color.watermelon
 
     init {
         this.priceFormatter = PriceFormatter()

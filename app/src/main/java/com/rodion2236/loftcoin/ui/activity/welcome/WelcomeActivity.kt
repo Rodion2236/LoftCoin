@@ -14,8 +14,8 @@ import com.rodion2236.loftcoin.databinding.ActivityWelcomeBinding
 
 class WelcomeActivity : AppCompatActivity() {
 
-    lateinit var bindingWelcomeActivity: ActivityWelcomeBinding
-    lateinit var snapHelper: SnapHelper
+    private lateinit var bindingWelcomeActivity: ActivityWelcomeBinding
+    private lateinit var snapHelper: SnapHelper
 
     companion object {
         const val KEY_SHOW_WELCOME_SCREEN = "KSW"

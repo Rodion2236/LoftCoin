@@ -7,24 +7,35 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rodion2236.loftcoin.R
+import com.rodion2236.loftcoin.core.BaseComponent
 import com.rodion2236.loftcoin.databinding.FragmentRatesBinding
-import com.rodion2236.loftcoin.ui.util.PercentFormatter
-import com.rodion2236.loftcoin.ui.util.PriceFormatter
+import javax.inject.Inject
 
-class RatesFragment : Fragment() {
+class RatesFragment @Inject constructor(
+
+) : Fragment() {
 
     private lateinit var adapter: RatesAdapter
     private lateinit var viewModel: RatesViewModel
     private lateinit var bindingRatesFragment: FragmentRatesBinding
 
+    @Inject
+    lateinit var baseComponent: BaseComponent
+    private lateinit var component: RatesComponent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RatesViewModel::class.java)
-        adapter = RatesAdapter(PriceFormatter(), PercentFormatter())
+        component = DaggerRatesComponent
+            .builder()
+            .baseComponent(baseComponent)
+            .build()
+        viewModel = ViewModelProvider(this, component.viewModelFactory())[RatesViewModel::class.java]
+        adapter = component.ratesAdapter()
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.fragment_rates, container, false)
     }
 
@@ -38,12 +49,12 @@ class RatesFragment : Fragment() {
         bindingRatesFragment.recycler.swapAdapter(adapter, false)
         bindingRatesFragment.recycler.setHasFixedSize(true)
 
-        viewModel.coins.observe(viewLifecycleOwner) { list ->
+        viewModel.coins().observe(viewLifecycleOwner) { list ->
             adapter.submitList(list)
         }
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            bindingRatesFragment.fragmentRatesRefresher.isRefreshing = isLoading
-            bindingRatesFragment.recycler.visibility = if (isLoading) View.GONE else View.VISIBLE
+        viewModel.isRefreshing().observe(viewLifecycleOwner) { isRefreshing ->
+            bindingRatesFragment.fragmentRatesRefresher.isRefreshing = isRefreshing
+            bindingRatesFragment.recycler.visibility = if (isRefreshing) View.GONE else View.VISIBLE
         }
 
         bindingRatesFragment.fragmentRatesRefresher.setOnRefreshListener {
