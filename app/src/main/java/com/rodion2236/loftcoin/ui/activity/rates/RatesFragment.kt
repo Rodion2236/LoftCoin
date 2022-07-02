@@ -9,15 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.core.BaseComponent
 import com.rodion2236.loftcoin.databinding.FragmentRatesBinding
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class RatesFragment @Inject constructor(
-
-) : Fragment() {
-
+class RatesFragment @Inject constructor() : Fragment() {
     private lateinit var adapter: RatesAdapter
     private lateinit var viewModel: RatesViewModel
     private lateinit var bindingRatesFragment: FragmentRatesBinding
+    private val compositeDisposable = CompositeDisposable()
 
     @Inject
     lateinit var baseComponent: BaseComponent
@@ -49,13 +48,8 @@ class RatesFragment @Inject constructor(
         bindingRatesFragment.recycler.swapAdapter(adapter, false)
         bindingRatesFragment.recycler.setHasFixedSize(true)
 
-        viewModel.coins().observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list)
-        }
-        viewModel.isRefreshing().observe(viewLifecycleOwner) { isRefreshing ->
-            bindingRatesFragment.fragmentRatesRefresher.isRefreshing = isRefreshing
-            bindingRatesFragment.recycler.visibility = if (isRefreshing) View.GONE else View.VISIBLE
-        }
+        compositeDisposable.add(viewModel.coins().subscribe(adapter::submitList))
+        compositeDisposable.add(viewModel.isRefreshing().subscribe(bindingRatesFragment.fragmentRatesRefresher::setRefreshing))
 
         bindingRatesFragment.fragmentRatesRefresher.setOnRefreshListener {
             viewModel.refresh()
@@ -72,12 +66,15 @@ class RatesFragment @Inject constructor(
             NavHostFragment.findNavController(this)
                 .navigate(R.id.currency_dialog)
             return true
+        } else if (R.id.sort_dialog == item.itemId) {
+            viewModel.switchSortingOrder()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {
         bindingRatesFragment.recycler.swapAdapter(null, false)
+        compositeDisposable.clear()
         super.onDestroyView()
     }
 }

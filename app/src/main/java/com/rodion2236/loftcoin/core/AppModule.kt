@@ -17,5 +17,5 @@ class AppModule {
     @Singleton
     @Provides
     fun provideIoExecutor() =
-        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2 + 1)
+        Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2 + 1)!!
 }

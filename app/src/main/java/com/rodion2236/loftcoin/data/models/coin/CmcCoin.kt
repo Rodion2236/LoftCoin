@@ -20,8 +20,6 @@ data class Quote(
     val change24h: Double
 )
 
-
-
 data class Coin(
     val id: Int,
     val name: String,
