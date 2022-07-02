@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.databinding.WelcomePageBinding
 
-internal class WelcomeRecyclerViewAdapter: RecyclerView.Adapter<WelcomeRecyclerViewAdapter.ViewHolder>() {
+internal class WelcomeAdapter: RecyclerView.Adapter<WelcomeAdapter.ViewHolder>() {
 
     companion object {
         private val images_welcome = intArrayOf(

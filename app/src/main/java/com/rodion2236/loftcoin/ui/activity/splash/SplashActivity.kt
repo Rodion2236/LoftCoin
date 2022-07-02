@@ -1,44 +1,51 @@
 package com.rodion2236.loftcoin.ui.activity.splash
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import androidx.annotation.VisibleForTesting
 import androidx.preference.PreferenceManager
 import com.rodion2236.loftcoin.ui.activity.main.MainActivity
 import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.ui.activity.welcome.WelcomeActivity
-import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 class SplashActivity : AppCompatActivity() {
-    private val compositeDisposable = CompositeDisposable()
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var runnable: Runnable
+
+    @VisibleForTesting
+    var idling = object : SplashIdling {
+        override fun busy() {}
+
+        override fun idle() {}
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
-
-        compositeDisposable.add(
-            Completable.timer(1, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (preferenceManager.getBoolean(WelcomeActivity.KEY_SHOW_WELCOME_SCREEN, true)) {
-                        startActivity(Intent(this, WelcomeActivity::class.java))
-                    } else {
-                        startActivity(Intent(this, MainActivity::class.java))
-                    }
-                    finish()
-                }
-        )
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        runnable = if (sharedPreferences.getBoolean(WelcomeActivity.KEY_SHOW_WELCOME_SCREEN, true)) {
+            Runnable {
+                startActivity(Intent(this, WelcomeActivity::class.java))
+                idling.idle()
+            }
+        } else {
+            Runnable {
+                startActivity(Intent(this, MainActivity::class.java))
+                idling.idle()
+            }
+        }
+        handler.postDelayed(runnable, 1500)
+        idling.busy()
     }
 
     override fun onStop() {
-        compositeDisposable.dispose()
         super.onStop()
+        handler.removeCallbacks(runnable)
     }
 }

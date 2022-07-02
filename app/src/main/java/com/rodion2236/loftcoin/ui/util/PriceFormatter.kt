@@ -25,8 +25,8 @@ class PriceFormatter @Inject constructor() : Formatter<Double> {
         LOCALES["USD"] = Locale.US
     }
 
-    fun format(currency: String, value: Double): String {
+    fun format(value: Double,currency: String): String {
         val locale = LOCALES[currency]
-        return java.text.NumberFormat.getCurrencyInstance(locale).format(value)
+        return NumberFormat.getCurrencyInstance(locale).format(value)
     }
 }

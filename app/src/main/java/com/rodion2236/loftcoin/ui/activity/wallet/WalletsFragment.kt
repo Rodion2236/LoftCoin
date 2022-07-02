@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.SnapHelper
 import com.rodion2236.loftcoin.R
 import com.rodion2236.loftcoin.core.BaseComponent
 import com.rodion2236.loftcoin.databinding.FragmentWalletsBinding
-import com.rodion2236.loftcoin.ui.activity.rates.DaggerRatesComponent
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import kotlin.math.abs

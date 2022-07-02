@@ -10,8 +10,9 @@ import com.rodion2236.loftcoin.databinding.ItemWalletsBinding
 import com.rodion2236.loftcoin.ui.util.BalanceFormatter
 import com.rodion2236.loftcoin.ui.util.PriceFormatter
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
-class WalletAdapter(
+class WalletAdapter @Inject constructor(
     private val priceFormatter: PriceFormatter,
     private val balanceFormatter: BalanceFormatter,
 ) : ListAdapter<Wallet, WalletAdapter.ViewHolder>(WalletComparator) {
