@@ -1,16 +1,18 @@
-package com.rodion2236.loftcoin.data
+package com.rodion2236.loftcoin.ui.util
 
 import android.content.Context
 import androidx.room.Room
 import com.rodion2236.loftcoin.BuildConfig
 import com.rodion2236.loftcoin.data.api.CmcApi
+import com.rodion2236.loftcoin.data.models.listings.Listings
 import com.rodion2236.loftcoin.data.models.coin.Coin
-import com.rodion2236.loftcoin.data.models.Listings
 import com.rodion2236.loftcoin.data.models.coin.room.LoftCoinDatabase
-import com.rodion2236.loftcoin.data.models.currency.CurrencyRepo
-import com.rodion2236.loftcoin.data.models.currency.CurrencyRepoImpl
-import com.rodion2236.loftcoin.repository.CmcCoinsRepo
-import com.rodion2236.loftcoin.repository.CoinsRepo
+import com.rodion2236.loftcoin.repository.currency.CurrencyRepo
+import com.rodion2236.loftcoin.repository.currency.CurrencyRepoImpl
+import com.rodion2236.loftcoin.repository.coin.CmcCoinsRepo
+import com.rodion2236.loftcoin.repository.coin.CoinsRepo
+import com.rodion2236.loftcoin.repository.wallets.WalletsRepo
+import com.rodion2236.loftcoin.repository.wallets.WalletsRepoImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Binds
@@ -20,6 +22,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
@@ -51,7 +54,7 @@ abstract class DataModule {
         }
 
         @Provides
-        fun configureRetrofit(configureOkHttpClient: OkHttpClient): Retrofit {
+        fun configureRetrofit(configureOkHttpClient: OkHttpClient): Retrofit{
             val moshiBuilder = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
             return Retrofit.Builder()
                 .client(configureOkHttpClient)
@@ -64,6 +67,7 @@ abstract class DataModule {
                             .build()
                     )
                 )
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                 .build()
         }
 
@@ -81,4 +85,7 @@ abstract class DataModule {
 
     @Binds
     abstract fun bindCurrencyRepo(currencyRepo: CurrencyRepoImpl): CurrencyRepo
+
+    @Binds
+    abstract fun bindWalletsRepo(repo: WalletsRepoImpl) : WalletsRepo
 }

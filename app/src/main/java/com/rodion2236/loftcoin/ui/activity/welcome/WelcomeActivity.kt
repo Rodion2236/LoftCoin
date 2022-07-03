@@ -28,7 +28,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         bindingWelcomeActivity.recycler.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         bindingWelcomeActivity.recycler.addItemDecoration(CircleIndicator(this))
-        bindingWelcomeActivity.recycler.adapter = WelcomeRecyclerViewAdapter()
+        bindingWelcomeActivity.recycler.adapter = WelcomeAdapter()
         bindingWelcomeActivity.recycler.setHasFixedSize(true)
 
         snapHelper = PagerSnapHelper()

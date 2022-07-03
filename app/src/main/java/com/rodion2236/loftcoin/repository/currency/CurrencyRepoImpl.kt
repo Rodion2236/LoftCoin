@@ -1,4 +1,4 @@
-package com.rodion2236.loftcoin.data.models.currency
+package com.rodion2236.loftcoin.repository.currency
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,9 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import com.rodion2236.loftcoin.R
+import com.rodion2236.loftcoin.data.models.currency.Currency
 import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import java.util.HashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,28 +34,22 @@ class CurrencyRepoImpl @Inject constructor(context: Context) : CurrencyRepo {
         return liveData
     }
 
-    override fun currency(): LiveData<Currency> {
-        return CurrencyLiveData()
+    override fun currency(): Observable<Currency> {
+        return Observable.create { emitter ->
+            val listener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+                if (!emitter.isDisposed) {
+                    availableCurrencies[prefs.getString(key, "USD")]
+                }
+            }
+            prefs.registerOnSharedPreferenceChangeListener(listener)
+            emitter.setCancellable {
+                prefs.unregisterOnSharedPreferenceChangeListener(listener)
+            }
+            emitter.onNext(availableCurrencies[prefs.getString(KEY_CURRENCY, "USD")]!!)
+        }
     }
 
     override fun updateCurrency(currency: Currency) {
         prefs.edit().putString(KEY_CURRENCY, currency.code).apply()
     }
-
-    private inner class CurrencyLiveData : LiveData<Currency>(),
-        SharedPreferences.OnSharedPreferenceChangeListener {
-        override fun onActive() {
-            prefs.registerOnSharedPreferenceChangeListener(this)
-            value = availableCurrencies[prefs.getString(KEY_CURRENCY, "USD")]
-        }
-
-        override fun onInactive() {
-            prefs.unregisterOnSharedPreferenceChangeListener(this)
-        }
-
-        override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
-            value = availableCurrencies[prefs.getString(key, "USD")]
-        }
-    }
-
 }
